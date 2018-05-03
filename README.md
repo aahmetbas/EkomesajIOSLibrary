@@ -1,11 +1,9 @@
 # KÜTÜPHANEYİ PROJEYE EKLEME
 
-ekomesajapi klasörünü proje dosyanızın bulunduğu dizinin içine atınız.
+ekomesajapi klasörünü XCode projenizin üzerine sürükleyin.
 
-### settings.gradle dosyasına aşağıdaki kodu ekleyin
-```java
-include ':app', ':ekomesajapi'
-```
+![alt text](https://github.com/mobilisim/EkomesajIOSLibrary/blob/master/Image1.png?raw=true)
+
 
 ### build.gradle dosyasına dependecies kısmına aşağıdaki kodu ekleyin
 ```java
