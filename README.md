@@ -2,207 +2,10 @@
 
 ekomesajapi klasörünü XCode projenizin üzerine sürükleyin.
 
+![alt text](https://github.com/mobilisim/EkomesajIOSLibrary/blob/master/Image2.png?raw=true)
+
+
 ![alt text](https://github.com/mobilisim/EkomesajIOSLibrary/blob/master/Image1.png?raw=true)
-
-
-### build.gradle dosyasına dependecies kısmına aşağıdaki kodu ekleyin
-```java
-compile project(path: ':ekomesajapi')
-```
-
-# LOGİN METODU
-```swift
-// LOGIN
-// Kullanıcının kullanıcı adı ve parolasını doğrular.
-
-// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
-let credential = Credential(username: "username", password: "password")
-
-PostLogin.post(credential: credential) { (response) in
-    if(response.status.code == 200){
-        print("UserId: \(response.userId)")
-    }else{
-        print("Code: \(response.status.code) Description: \(response.status.desc)")
-    }
-}
-
-/////////////////////////////////////////
-// gelen cevaplar ve anlamları.
-/////////////////////////////////////////
-
-// Status.
-// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
-// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
-// Alabileceği değerler için dokümana bakınız.
-
-// UserId:    Ana Kredi. Sahip olduğunuz kredi adetidir.
-```
-
-# GETBALANCE METODU
-```swift
-// GETBALANCE
-// Kredi durumunuzu gösterir.
-
-// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
-let credential = Credential(username: "username", password: "password")
-
-GetBalance.post(credential: credential) { (response) in
-    if(response.status.code == 200){
-        print("Main: \(response.balance.main) Limit: \(response.balance.limit)")
-    }else{
-        print("Code: \(response.status.code) Description: \(response.status.desc)")
-    }
-}
-
-/////////////////////////////////////////
-// gelen cevaplar ve anlamları.
-/////////////////////////////////////////
-
-// Status.
-// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
-// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
-// Alabileceği değerler için dokümana bakınız.
-
-// Main:    Ana Kredi. Sahip olduğunuz kredi adetidir.
-// Limit:   Eksiye düşebileceğiniz kredi adetidir.
-// Kullanılabilir Kredi:    total = main + limit;
-```
-
-# QUERY METODU
-```swift
-// QUERY
-// MessageId veya MessageId + Telefon numarasına göre raporlama yapmanızı sağlar.
-
-// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
-let credential = Credential(username: "username", password: "password")
-
-// messageId / [ZORUNLU]
-let messageId = "111222333"
-
-// ilgili pakette belirli bir numaranın raporlanması isteniyorsa girilir [OPSİYONEL]
-let phoneNumber = ""
-
-let requestQuery = RequestQuery(credential: credential, messageId: messageId, phoneNumber: phoneNumber)
-PostQuery.post(requestQuery: requestQuery) { (response) in
-    if(response.status.code == 200){
-        for query in response.list {
-            print("Id: \(query.id) Network: \(query.network) MSISDN: \(query.msisdn) Cost: \(query.cost) Submitted: \(query.submitted) LastUpdate: \(query.lastUpdate) State: \(query.state) Sequence: \(query.sequence) ErrorCode: \(query.errorCode) PayLoad: \(query.payLoad) Xser: \(query.xser) ")
-        }
-    }else{
-        print("Code: \(response.status.code) Description: \(response.status.desc)")
-    }
-}
-
-/////////////////////////////////////////
-// gelen cevaplar ve anlamları.
-/////////////////////////////////////////
-
-// Status.
-// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
-// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
-// Alabileceği değerler için dokümana bakınız.
-
-// Query
-// Payload:    Mesaj içeriği.
-// Xser:       UCP XSER değeri veya UDH SMPP değeri.
-// Cost:       Mesaj ücreti.
-// ErrorCode:  Hata kodu. Mesaj gönderiminde problem olursa bu alanda hata kodu döner.
-// Id:         Bir pakette birden fazla veya tek mesaj bulunabilir. Mesajın paket içerisindeki Id numarasıdır.
-// LastUpdated:Durum güncellemesinin yapıldığı son tarih. (UTC Time Zone)
-// MSISDN:     Gönderilen telefon numarası.
-// Network:    Mesajın gönderildiği operatör Id'si.
-// Sequence:   Uzun/Birleşik mesajlarda burada her mesajın içeriği listelenir.
-// State:      Mesaj durumu.
-// Submitted:  Mesajın sisteme teslim edilme zamanıdır. (UTC Time Zone)
-```
-
-
-
-
-# QUERYMULTI METODU
-```swift
-// QUERYMULTI
-// Tarih aralığına göre raporlama yapmanızı sağlar.
-
-// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
-let credential = Credential(username: "Username", password: "Password")
-
-// Başlangıç Tarihi / [ZORUNLU]
-let beginDate = "2018-03-01T12:23:00"
-
-// Bitiş Tarihi / [ZORUNLU]
-let endDate   = "2018-05-01T16:53:00"
-
-let requestQueryMulti = RequestQueryMulti(credential: credential, beginDate: beginDate, endDate: endDate)
-PostQueryMulti.post(requestQueryMulti: requestQueryMulti) { (response) in
-    if(response.status.code == 200){
-        for queryMulti in response.list {
-            print("Id: \(queryMulti.id) Cost: \(queryMulti.cost) State: \(queryMulti.state) Count: \(queryMulti.count) Coding: \(queryMulti.coding) Message: \(queryMulti.message) Received: \(queryMulti.received) Sender: \(queryMulti.sender) Sent: \(queryMulti.sent) DeliveredCount: \(queryMulti.deliveredCount) UndeliveredCount: \(queryMulti.undeliveredCount)")
-        }
-    }else{
-        print("Code: \(response.status.code) Description: \(response.status.desc)")
-    }
-}
-
-/////////////////////////////////////////
-// gelen cevaplar ve anlamları.
-/////////////////////////////////////////
-
-// Status.
-// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
-// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
-// Alabileceği değerler için dokümana bakınız.
-
-// QueryMulti
-// Cost:            Mesaj ücreti.
-// Count:           Toplam mesaj sayısı.
-// DeliveredCount:  Teslim edilen mesaj sayısı.
-// UndeliveredCount:Teslim edilemeyen mesaj sayısı.
-// Id:              Mesaj paket numarasıdır.
-// Message:         Mesaj içeriği.
-// Received:        Sistemin mesajı aldığı tarih. (UTC Time Zone)
-// Sender:          Mesajı gönderen alfanumerik isim.
-// Sent:            Mesajı gönderilme tarihi. (UTC Time Zone)
-// State:           Mesaj paketinin durumu. Mesaj Paket Durumları
-// Coding:          Mesajın kodlanma biçimidir. 3 değer alabilir;
-```
-
-
-# QUERYSTATS METODU
-```java
-// QUERYSTATS
-// Aylık ve Yıllık teslimat rapor bilgilerini verir.
-
-// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
-let credential = Credential(username: "Username", password: "Password")
-
-PostQueryStats.post(credential: credential) { (response) in
-    if(response.status.code == 200){
-        for queryStats in response.list {
-            print("Year: \(queryStats.year) Month: \(queryStats.month) Delivered: \(queryStats.delivered) Undelivered: \(queryStats.undelivered) Count: \(queryStats.count)")
-        }
-    }else{
-        print("Code: \(response.status.code) Description: \(response.status.desc)")
-    }
-}
-
-/////////////////////////////////////////
-// gelen cevaplar ve anlamları.
-/////////////////////////////////////////
-
-// Status.
-// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
-// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
-// Alabileceği değerler için dokümana bakınız.
-
-// QueryStats
-// Count:              Toplam gönderilen mesaj sayısı.
-// Delivered:          Teslim edilen mesaj sayısı.
-// UndeliveredCount:   Teslim edilemeyen mesaj sayısı.
-// Month:              Rapor ay bilgisi.
-// Year:               Rapor yıl bilgisi.
-```
-
 
 
 # SUBMIT METODU
@@ -262,7 +65,6 @@ PostSubmit.post(requestSubmit: requestSubmit) { (response) in
 // Sistemden rapor alınması için geri dönen mesaj numarasıdır.
 ```
 
-
 # SUBMITMULTI METODU
 ```swift
 // SUBMITMULTI
@@ -317,6 +119,195 @@ PostSubmitMulti.post(requestSubmitMulti: requestSubmitMulti) { (response) in
 
 // MessageId
 // Sistemden rapor alınması için geri dönen mesaj numarasıdır.
+```
+
+# QUERY METODU
+```swift
+// QUERY
+// MessageId veya MessageId + Telefon numarasına göre raporlama yapmanızı sağlar.
+
+// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
+let credential = Credential(username: "username", password: "password")
+
+// messageId / [ZORUNLU]
+let messageId = "111222333"
+
+// ilgili pakette belirli bir numaranın raporlanması isteniyorsa girilir [OPSİYONEL]
+let phoneNumber = ""
+
+let requestQuery = RequestQuery(credential: credential, messageId: messageId, phoneNumber: phoneNumber)
+PostQuery.post(requestQuery: requestQuery) { (response) in
+    if(response.status.code == 200){
+        for query in response.list {
+            print("Id: \(query.id) Network: \(query.network) MSISDN: \(query.msisdn) Cost: \(query.cost) Submitted: \(query.submitted) LastUpdate: \(query.lastUpdate) State: \(query.state) Sequence: \(query.sequence) ErrorCode: \(query.errorCode) PayLoad: \(query.payLoad) Xser: \(query.xser) ")
+        }
+    }else{
+        print("Code: \(response.status.code) Description: \(response.status.desc)")
+    }
+}
+
+/////////////////////////////////////////
+// gelen cevaplar ve anlamları.
+/////////////////////////////////////////
+
+// Status.
+// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
+// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
+// Alabileceği değerler için dokümana bakınız.
+
+// Query
+// Payload:    Mesaj içeriği.
+// Xser:       UCP XSER değeri veya UDH SMPP değeri.
+// Cost:       Mesaj ücreti.
+// ErrorCode:  Hata kodu. Mesaj gönderiminde problem olursa bu alanda hata kodu döner.
+// Id:         Bir pakette birden fazla veya tek mesaj bulunabilir. Mesajın paket içerisindeki Id numarasıdır.
+// LastUpdated:Durum güncellemesinin yapıldığı son tarih. (UTC Time Zone)
+// MSISDN:     Gönderilen telefon numarası.
+// Network:    Mesajın gönderildiği operatör Id'si.
+// Sequence:   Uzun/Birleşik mesajlarda burada her mesajın içeriği listelenir.
+// State:      Mesaj durumu.
+// Submitted:  Mesajın sisteme teslim edilme zamanıdır. (UTC Time Zone)
+```
+
+# QUERYMULTI METODU
+```swift
+// QUERYMULTI
+// Tarih aralığına göre raporlama yapmanızı sağlar.
+
+// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
+let credential = Credential(username: "Username", password: "Password")
+
+// Başlangıç Tarihi / [ZORUNLU]
+let beginDate = "2018-03-01T12:23:00"
+
+// Bitiş Tarihi / [ZORUNLU]
+let endDate   = "2018-05-01T16:53:00"
+
+let requestQueryMulti = RequestQueryMulti(credential: credential, beginDate: beginDate, endDate: endDate)
+PostQueryMulti.post(requestQueryMulti: requestQueryMulti) { (response) in
+    if(response.status.code == 200){
+        for queryMulti in response.list {
+            print("Id: \(queryMulti.id) Cost: \(queryMulti.cost) State: \(queryMulti.state) Count: \(queryMulti.count) Coding: \(queryMulti.coding) Message: \(queryMulti.message) Received: \(queryMulti.received) Sender: \(queryMulti.sender) Sent: \(queryMulti.sent) DeliveredCount: \(queryMulti.deliveredCount) UndeliveredCount: \(queryMulti.undeliveredCount)")
+        }
+    }else{
+        print("Code: \(response.status.code) Description: \(response.status.desc)")
+    }
+}
+
+/////////////////////////////////////////
+// gelen cevaplar ve anlamları.
+/////////////////////////////////////////
+
+// Status.
+// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
+// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
+// Alabileceği değerler için dokümana bakınız.
+
+// QueryMulti
+// Cost:            Mesaj ücreti.
+// Count:           Toplam mesaj sayısı.
+// DeliveredCount:  Teslim edilen mesaj sayısı.
+// UndeliveredCount:Teslim edilemeyen mesaj sayısı.
+// Id:              Mesaj paket numarasıdır.
+// Message:         Mesaj içeriği.
+// Received:        Sistemin mesajı aldığı tarih. (UTC Time Zone)
+// Sender:          Mesajı gönderen alfanumerik isim.
+// Sent:            Mesajı gönderilme tarihi. (UTC Time Zone)
+// State:           Mesaj paketinin durumu. Mesaj Paket Durumları
+// Coding:          Mesajın kodlanma biçimidir. 3 değer alabilir;
+```
+
+# QUERYSTATS METODU
+```java
+// QUERYSTATS
+// Aylık ve Yıllık teslimat rapor bilgilerini verir.
+
+// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
+let credential = Credential(username: "Username", password: "Password")
+
+PostQueryStats.post(credential: credential) { (response) in
+    if(response.status.code == 200){
+        for queryStats in response.list {
+            print("Year: \(queryStats.year) Month: \(queryStats.month) Delivered: \(queryStats.delivered) Undelivered: \(queryStats.undelivered) Count: \(queryStats.count)")
+        }
+    }else{
+        print("Code: \(response.status.code) Description: \(response.status.desc)")
+    }
+}
+
+/////////////////////////////////////////
+// gelen cevaplar ve anlamları.
+/////////////////////////////////////////
+
+// Status.
+// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
+// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
+// Alabileceği değerler için dokümana bakınız.
+
+// QueryStats
+// Count:              Toplam gönderilen mesaj sayısı.
+// Delivered:          Teslim edilen mesaj sayısı.
+// UndeliveredCount:   Teslim edilemeyen mesaj sayısı.
+// Month:              Rapor ay bilgisi.
+// Year:               Rapor yıl bilgisi.
+```
+
+# LOGİN METODU
+```swift
+// LOGIN
+// Kullanıcının kullanıcı adı ve parolasını doğrular.
+
+// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
+let credential = Credential(username: "username", password: "password")
+
+PostLogin.post(credential: credential) { (response) in
+    if(response.status.code == 200){
+        print("UserId: \(response.userId)")
+    }else{
+        print("Code: \(response.status.code) Description: \(response.status.desc)")
+    }
+}
+
+/////////////////////////////////////////
+// gelen cevaplar ve anlamları.
+/////////////////////////////////////////
+
+// Status.
+// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
+// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
+// Alabileceği değerler için dokümana bakınız.
+
+// UserId:    Ana Kredi. Sahip olduğunuz kredi adetidir.
+```
+
+# GETBALANCE METODU
+```swift
+// GETBALANCE
+// Kredi durumunuzu gösterir.
+
+// credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
+let credential = Credential(username: "username", password: "password")
+
+GetBalance.post(credential: credential) { (response) in
+    if(response.status.code == 200){
+        print("Main: \(response.balance.main) Limit: \(response.balance.limit)")
+    }else{
+        print("Code: \(response.status.code) Description: \(response.status.desc)")
+    }
+}
+
+/////////////////////////////////////////
+// gelen cevaplar ve anlamları.
+/////////////////////////////////////////
+
+// Status.
+// Code ve Desc alanları yer alır. Mesajın sisteme başarılı şekilde gönderilip gönderilmediği bilgisini verir.
+// Code = 200 ve Description = OK ise mesaj sisteme başarılı şekilde ulaşmıştır. Bu mesajın iletim durumu değildir.
+// Alabileceği değerler için dokümana bakınız.
+
+// Main:    Ana Kredi. Sahip olduğunuz kredi adetidir.
+// Limit:   Eksiye düşebileceğiniz kredi adetidir.
+// Kullanılabilir Kredi:    total = main + limit;
 ```
 
 # GETSETTING METODU
