@@ -1,6 +1,6 @@
 # KÜTÜPHANEYİ PROJEYE EKLEME
 
-ekomesajapi klasörünü XCode projenizin üzerine sürükleyin.
+ekomesajapi klasörünü XCode'da oluşturduğunuz projenizin üzerine sürükleyerek ekleyebilirsiniz.
 
 ![alt text](https://github.com/mobilisim/EkomesajIOSLibrary/blob/master/Image2.png?raw=true)
 
