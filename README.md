@@ -316,7 +316,7 @@ GetBalance.post(credential: credential) { (response) in
 // Hesabınız ile ilgili bilgileri almanızı sağlar.
 
 // credential objesi API'ye ulaşabilmeniz için gerekli kullanıcı doğrulamasının yapıldığı alandır.
-let credential = Credential(username: "aahmetbas", password: "alp1234")
+let credential = Credential(username: "username", password: "password")
 
 GetSettings.post(credential: credential) { (response) in
     if(response.status.code == 200){
