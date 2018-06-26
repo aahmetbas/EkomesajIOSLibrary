@@ -47,6 +47,7 @@ public class PostQueryMulti {
                                     temp.received   = queryMulit.value(forKey: "Received") as! String
                                     temp.state      = queryMulit.value(forKey: "State") as! String
                                     temp.sender     = queryMulit.value(forKey: "Sender") as! String
+                                    temp.sent       = queryMulit.value(forKey: "Sent") as! String
                                     temp.cost       = queryMulit.value(forKey: "Cost") as! Int
                                     temp.message    = queryMulit.value(forKey: "Message") as! String
                                     temp.coding     = queryMulit.value(forKey: "Coding") as! String
